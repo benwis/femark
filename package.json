@@ -13,7 +13,7 @@
     "ava": "^4.2.0"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 14.0.0"
   },
   "scripts": {
     "artifacts": "napi artifacts",
