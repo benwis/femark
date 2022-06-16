@@ -33,6 +33,16 @@ jobs:
             build: yarn build
             target: x86_64-pc-windows-msvc
             architecture: x64
+          - host: macos-latest
+            target: aarch64-apple-darwin
+            build: |
+              sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
+              export CC=$(xcrun -f clang);
+              export CXX=$(xcrun -f clang++);
+              SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
+              export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
+              yarn build --target aarch64-apple-darwin
+              strip -x *.node
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
@@ -209,7 +219,7 @@ jobs:
         shell: bash
       - name: Publish
         run: |
-          if git log -1 --pretty=%d  |  grep "[0-9]\+\.[0-9]\+\.[0-9]\+[^-];
+          if git log -1 --pretty=%d  |  grep "[0-9]\+\.[0-9]\+\.[0-9]\+[^-]";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish --access public
