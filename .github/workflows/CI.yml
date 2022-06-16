@@ -232,6 +232,7 @@ jobs:
             echo $(git log -1 --pretty=%b)
             echo "2"
             echo $(git log -1 --pretty=%B)
+            echo "3"
             echo $(git log -1 --pretty=%b | grep "[0-9]\+\.[0-9]\+\.[0-9]")
             echo "Not a release, skipping publish"
           fi
