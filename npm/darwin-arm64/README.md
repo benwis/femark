@@ -1,3 +1,3 @@
-# `napi-all-test-darwin-arm64`
+# `@benwis/femark-napi-darwin-arm64`
 
-This is the **aarch64-apple-darwin** binary for `napi-all-test`
+This is the **aarch64-apple-darwin** binary for `@benwis/femark-napi`
