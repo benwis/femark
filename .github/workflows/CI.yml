@@ -223,11 +223,15 @@ jobs:
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish --access public
-          elif git log -1 --pretty=%d | grep "[0-9]\+\.[0-9]\+\.[0-9]\+";
+          elif git log -1 --pretty=%d | grep "[0-9]\+\.[0-9]\+\.[0-9]";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish --tag next --access public
           else
+            $x = git log -1 --pretty=%d
+            echo $x
+            $y = git log -1 --pretty=%d | grep "[0-9]\+\.[0-9]\+\.[0-9]"
+            echo $y
             echo "Not a release, skipping publish"
           fi
         env:
