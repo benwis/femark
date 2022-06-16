@@ -1,5 +1,5 @@
 {
-  "name": "femark-napi-darwin-arm64",
+  "name": "@benwis/femark-napi-darwin-arm64",
   "version": "0.0.0",
   "os": [
     "darwin"

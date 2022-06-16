@@ -234,6 +234,8 @@ jobs:
             echo $(git log -1 --pretty=%B)
             echo "3"
             echo $(git log -1 --pretty=%b | grep "[0-9]\+\.[0-9]\+\.[0-9]")
+            echo "4"
+            echo $(git log -1 --tags --pretty="%h %d %s %B %b" --decorate=full)
             echo "Not a release, skipping publish"
           fi
         env:

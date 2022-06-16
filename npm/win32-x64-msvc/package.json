@@ -1,5 +1,5 @@
 {
-  "name": "femark-napi-win32-x64-msvc",
+  "name": "@benwis/femark-napi-win32-x64-msvc",
   "version": "0.0.0",
   "os": [
     "win32"
