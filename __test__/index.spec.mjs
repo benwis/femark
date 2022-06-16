@@ -1,7 +1,8 @@
 import test from 'ava'
 
-import { sum } from '../index.js'
+import { renderMarkdown } from '../index.js'
 
-test('sum from native', (t) => {
-  t.is(sum(1, 2), 3)
+// Can it render a basic Hello World string?
+test('render Hello, World!', (t) => {
+  t.is(renderMarkdown("# Hello, World!"), `<h1>Hello, World!</h1>\n`)
 })
