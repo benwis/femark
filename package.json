@@ -1,0 +1,26 @@
+{
+  "name": "@benwis/femark-napi",
+  "version": "0.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "napi": {
+    "name": "femark-napi",
+    "triples": {}
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@napi-rs/cli": "^2.9.0",
+    "ava": "^4.2.0"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava",
+    "version": "napi version"
+  }
+}
