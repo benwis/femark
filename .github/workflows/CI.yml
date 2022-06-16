@@ -219,15 +219,19 @@ jobs:
         shell: bash
       - name: Publish
         run: |
-          if git log -1 --pretty=%b  |  grep "[0-9]\+\.[0-9]\+\.[0-9]\+[^-]";
+          if git log -1 --pretty=%B  |  grep "[0-9]\+\.[0-9]\+\.[0-9]\+[^-]";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish --access public
-          elif git log -1 --pretty=%b | grep "[0-9]\+\.[0-9]\+\.[0-9]";
+          elif git log -1 --pretty=%B | grep "[0-9]\+\.[0-9]\+\.[0-9]";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish --tag next --access public
           else
+            echo "1"
+            echo $(git log -1 --pretty=%b)
+            echo "2"
+            echo $(git log -1 --pretty=%B)
             echo $(git log -1 --pretty=%b | grep "[0-9]\+\.[0-9]\+\.[0-9]")
             echo "Not a release, skipping publish"
           fi
