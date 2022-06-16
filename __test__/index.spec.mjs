@@ -1,7 +1,7 @@
 import test from 'ava'
 
-import { sum } from '../index.js'
+import { renderMarkdown } from '../index.js'
 
-test('sum from native', (t) => {
-  t.is(sum(1, 2), 3)
+test('render Hello World', (t) => {
+  t.is(renderMarkdown("# Hello, world"), `<h1>Hello, world</h1>\n`)
 })
