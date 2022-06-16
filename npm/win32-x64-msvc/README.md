@@ -1,3 +1,3 @@
-# `@benwis/femark-napi-win32-x64-msvc`
+# `femark-napi-win32-x64-msvc`
 
-This is the **x86_64-pc-windows-msvc** binary for `@benwis/femark-napi`
+This is the **x86_64-pc-windows-msvc** binary for `femark-napi`

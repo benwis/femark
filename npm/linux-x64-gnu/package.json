@@ -1,5 +1,5 @@
 {
-  "name": "@benwis/femark-napi-linux-x64-gnu",
+  "name": "femark-napi-linux-x64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -11,12 +11,10 @@
   "files": [
     "femark-napi.linux-x64-gnu.node"
   ],
-  "description": "A blazing fast Markdown to HTML compiler with support for syntax highlighting. Created using Rust's pulldown-cmark and syntect crates, compiled for use with the Node FFI",
   "license": "MIT",
   "engines": {
     "node": ">= 10"
   },
-  "repository": "https://github.com/benwis/femark-napi",
   "libc": [
     "glibc"
   ]

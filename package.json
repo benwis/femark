@@ -17,7 +17,7 @@
     "ava": "^4.2.0"
   },
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 10"
   },
   "scripts": {
     "artifacts": "napi artifacts",
@@ -26,12 +26,5 @@
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "version": "napi version"
-  },
-  "repository": "https://github.com/benwis/femark-napi",
-  "description": "A blazing fast Markdown to HTML compiler with support for syntax highlighting. Created using Rust's pulldown-cmark and syntect crates, compiled for use with the Node FFI",
-  "optionalDependencies": {
-    "@benwis/femark-napi-win32-x64-msvc": "0.0.0",
-    "@benwis/femark-napi-darwin-x64": "0.0.0",
-    "@benwis/femark-napi-linux-x64-gnu": "0.0.0"
   }
 }
