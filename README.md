@@ -7,3 +7,8 @@ This is a markdown to html parser and syntax highlighter built using Rust's pull
 ```sh
 npm i @benwis/femark-napi
 ```
+
+## Use
+```ts
+renderMarkdown('# Hello, World!');
+```
