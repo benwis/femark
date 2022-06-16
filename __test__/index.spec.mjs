@@ -2,6 +2,7 @@ import test from 'ava'
 
 import { renderMarkdown } from '../index.js'
 
-test('render Hello World', (t) => {
-  t.is(renderMarkdown("# Hello, world"), `<h1>Hello, world</h1>\n`)
+// Can it render a basic Hello World string?
+test('render Hello, World!', (t) => {
+  t.is(renderMarkdown("# Hello, World!"), `<h1>Hello, World!</h1>\n`)
 })
