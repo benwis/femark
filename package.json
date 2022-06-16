@@ -22,5 +22,7 @@
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "version": "napi version"
-  }
+  },
+  "repository": "https://github.com/benwis/femark-napi",
+  "description": "A blazing fast Markdown to HTML compiler with support for syntax highlighting. Created using Rust's pulldown-cmark and syntect crates, compiled for use with the Node FFI"
 }
