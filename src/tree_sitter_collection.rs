@@ -1,5 +1,4 @@
-use eyre::Result;
-use tree_sitter_highlight::{HighlightConfiguration, HighlightEvent, Highlighter};
+use tree_sitter_highlight::HighlightConfiguration;
 pub struct TreeSitterCollection {
   pub conf: HighlightConfiguration,
 }
@@ -96,7 +95,7 @@ impl TreeSitterCollection {
   }
   pub fn toml() -> TreeSitterCollection {
     let conf = HighlightConfiguration::new(
-      tree_sitter_html::language(),
+      tree_sitter_toml::language(),
       tree_sitter_toml::HIGHLIGHT_QUERY,
       "",
       "",

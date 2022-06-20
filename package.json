@@ -1,10 +1,10 @@
 {
-  "name": "@benwis/femark-napi",
+  "name": "@benwis/femark",
   "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "femark-napi",
+    "name": "femark",
     "triples": {
       "additional": [
         "aarch64-apple-darwin"

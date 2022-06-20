@@ -25,24 +25,24 @@ switch (platform) {
   case 'android':
     switch (arch) {
       case 'arm64':
-        localFileExisted = existsSync(join(__dirname, 'femark-napi.android-arm64.node'))
+        localFileExisted = existsSync(join(__dirname, 'femark.android-arm64.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.android-arm64.node')
+            nativeBinding = require('./femark.android-arm64.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-android-arm64')
+            nativeBinding = require('@benwis/femark-android-arm64')
           }
         } catch (e) {
           loadError = e
         }
         break
       case 'arm':
-        localFileExisted = existsSync(join(__dirname, 'femark-napi.android-arm-eabi.node'))
+        localFileExisted = existsSync(join(__dirname, 'femark.android-arm-eabi.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.android-arm-eabi.node')
+            nativeBinding = require('./femark.android-arm-eabi.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-android-arm-eabi')
+            nativeBinding = require('@benwis/femark-android-arm-eabi')
           }
         } catch (e) {
           loadError = e
@@ -56,13 +56,13 @@ switch (platform) {
     switch (arch) {
       case 'x64':
         localFileExisted = existsSync(
-          join(__dirname, 'femark-napi.win32-x64-msvc.node')
+          join(__dirname, 'femark.win32-x64-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.win32-x64-msvc.node')
+            nativeBinding = require('./femark.win32-x64-msvc.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-win32-x64-msvc')
+            nativeBinding = require('@benwis/femark-win32-x64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -70,13 +70,13 @@ switch (platform) {
         break
       case 'ia32':
         localFileExisted = existsSync(
-          join(__dirname, 'femark-napi.win32-ia32-msvc.node')
+          join(__dirname, 'femark.win32-ia32-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.win32-ia32-msvc.node')
+            nativeBinding = require('./femark.win32-ia32-msvc.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-win32-ia32-msvc')
+            nativeBinding = require('@benwis/femark-win32-ia32-msvc')
           }
         } catch (e) {
           loadError = e
@@ -84,13 +84,13 @@ switch (platform) {
         break
       case 'arm64':
         localFileExisted = existsSync(
-          join(__dirname, 'femark-napi.win32-arm64-msvc.node')
+          join(__dirname, 'femark.win32-arm64-msvc.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.win32-arm64-msvc.node')
+            nativeBinding = require('./femark.win32-arm64-msvc.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-win32-arm64-msvc')
+            nativeBinding = require('@benwis/femark-win32-arm64-msvc')
           }
         } catch (e) {
           loadError = e
@@ -103,12 +103,12 @@ switch (platform) {
   case 'darwin':
     switch (arch) {
       case 'x64':
-        localFileExisted = existsSync(join(__dirname, 'femark-napi.darwin-x64.node'))
+        localFileExisted = existsSync(join(__dirname, 'femark.darwin-x64.node'))
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.darwin-x64.node')
+            nativeBinding = require('./femark.darwin-x64.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-darwin-x64')
+            nativeBinding = require('@benwis/femark-darwin-x64')
           }
         } catch (e) {
           loadError = e
@@ -116,13 +116,13 @@ switch (platform) {
         break
       case 'arm64':
         localFileExisted = existsSync(
-          join(__dirname, 'femark-napi.darwin-arm64.node')
+          join(__dirname, 'femark.darwin-arm64.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.darwin-arm64.node')
+            nativeBinding = require('./femark.darwin-arm64.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-darwin-arm64')
+            nativeBinding = require('@benwis/femark-darwin-arm64')
           }
         } catch (e) {
           loadError = e
@@ -136,12 +136,12 @@ switch (platform) {
     if (arch !== 'x64') {
       throw new Error(`Unsupported architecture on FreeBSD: ${arch}`)
     }
-    localFileExisted = existsSync(join(__dirname, 'femark-napi.freebsd-x64.node'))
+    localFileExisted = existsSync(join(__dirname, 'femark.freebsd-x64.node'))
     try {
       if (localFileExisted) {
-        nativeBinding = require('./femark-napi.freebsd-x64.node')
+        nativeBinding = require('./femark.freebsd-x64.node')
       } else {
-        nativeBinding = require('@benwis/femark-napi-freebsd-x64')
+        nativeBinding = require('@benwis/femark-freebsd-x64')
       }
     } catch (e) {
       loadError = e
@@ -152,26 +152,26 @@ switch (platform) {
       case 'x64':
         if (isMusl()) {
           localFileExisted = existsSync(
-            join(__dirname, 'femark-napi.linux-x64-musl.node')
+            join(__dirname, 'femark.linux-x64-musl.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./femark-napi.linux-x64-musl.node')
+              nativeBinding = require('./femark.linux-x64-musl.node')
             } else {
-              nativeBinding = require('@benwis/femark-napi-linux-x64-musl')
+              nativeBinding = require('@benwis/femark-linux-x64-musl')
             }
           } catch (e) {
             loadError = e
           }
         } else {
           localFileExisted = existsSync(
-            join(__dirname, 'femark-napi.linux-x64-gnu.node')
+            join(__dirname, 'femark.linux-x64-gnu.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./femark-napi.linux-x64-gnu.node')
+              nativeBinding = require('./femark.linux-x64-gnu.node')
             } else {
-              nativeBinding = require('@benwis/femark-napi-linux-x64-gnu')
+              nativeBinding = require('@benwis/femark-linux-x64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -181,26 +181,26 @@ switch (platform) {
       case 'arm64':
         if (isMusl()) {
           localFileExisted = existsSync(
-            join(__dirname, 'femark-napi.linux-arm64-musl.node')
+            join(__dirname, 'femark.linux-arm64-musl.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./femark-napi.linux-arm64-musl.node')
+              nativeBinding = require('./femark.linux-arm64-musl.node')
             } else {
-              nativeBinding = require('@benwis/femark-napi-linux-arm64-musl')
+              nativeBinding = require('@benwis/femark-linux-arm64-musl')
             }
           } catch (e) {
             loadError = e
           }
         } else {
           localFileExisted = existsSync(
-            join(__dirname, 'femark-napi.linux-arm64-gnu.node')
+            join(__dirname, 'femark.linux-arm64-gnu.node')
           )
           try {
             if (localFileExisted) {
-              nativeBinding = require('./femark-napi.linux-arm64-gnu.node')
+              nativeBinding = require('./femark.linux-arm64-gnu.node')
             } else {
-              nativeBinding = require('@benwis/femark-napi-linux-arm64-gnu')
+              nativeBinding = require('@benwis/femark-linux-arm64-gnu')
             }
           } catch (e) {
             loadError = e
@@ -209,13 +209,13 @@ switch (platform) {
         break
       case 'arm':
         localFileExisted = existsSync(
-          join(__dirname, 'femark-napi.linux-arm-gnueabihf.node')
+          join(__dirname, 'femark.linux-arm-gnueabihf.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./femark-napi.linux-arm-gnueabihf.node')
+            nativeBinding = require('./femark.linux-arm-gnueabihf.node')
           } else {
-            nativeBinding = require('@benwis/femark-napi-linux-arm-gnueabihf')
+            nativeBinding = require('@benwis/femark-linux-arm-gnueabihf')
           }
         } catch (e) {
           loadError = e
@@ -236,7 +236,6 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { processMarkdownToHtml, renderMarkdown } = nativeBinding
+const { processMarkdownToHtml } = nativeBinding
 
 module.exports.processMarkdownToHtml = processMarkdownToHtml
-module.exports.renderMarkdown = renderMarkdown

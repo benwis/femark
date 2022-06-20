@@ -9,9 +9,6 @@ use tracing::{debug, warn};
 use tree_sitter::QueryError;
 use tree_sitter_highlight::{Highlight, HighlightConfiguration, HighlightEvent, Highlighter};
 
-// use self::wide_images::WideImages;
-// mod wide_images;
-
 fn options() -> Options {
   let mut options = Options::empty();
   options.insert(Options::ENABLE_TABLES);
@@ -262,7 +259,7 @@ pub fn process_markdown_to_html(input: String) -> String {
   let parser = Parser::new_ext(&input, options());
   let stream = parser;
   let langs = &LANGS;
-  let mut toc: Vec<TocEntry> = Vec::new();
+  let mut toc: Toc = Vec::new();
   let mut output: Vec<u8> = Vec::new();
   //   let stream = WideImages::new(parser);
 
@@ -416,7 +413,11 @@ pub fn process_markdown_to_html(input: String) -> String {
   });
 
   html::write_html(Cursor::new(&mut output), stream).unwrap();
-  String::from_utf8(output).unwrap()
+
+  match String::from_utf8(output) {
+    Ok(html) => html,
+    Err(e) => "".to_string(),
+  }
   //   Ok(output)
 }
 

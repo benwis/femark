@@ -1,5 +1,5 @@
 {
-  "name": "@benwis/femark-napi-linux-x64-gnu",
+  "name": "@benwis/femark-linux-x64-gnu",
   "version": "0.0.0",
   "os": [
     "linux"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "femark-napi.linux-x64-gnu.node",
+  "main": "femark.linux-x64-gnu.node",
   "files": [
-    "femark-napi.linux-x64-gnu.node"
+    "femark.linux-x64-gnu.node"
   ],
   "license": "MIT",
   "engines": {

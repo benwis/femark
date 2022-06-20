@@ -1,5 +1,5 @@
 {
-  "name": "@benwis/femark-napi-darwin-x64",
+  "name": "@benwis/femark-darwin-x64",
   "version": "0.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "femark-napi.darwin-x64.node",
+  "main": "femark.darwin-x64.node",
   "files": [
-    "femark-napi.darwin-x64.node"
+    "femark.darwin-x64.node"
   ],
   "license": "MIT",
   "engines": {

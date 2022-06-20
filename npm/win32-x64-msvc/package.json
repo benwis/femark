@@ -1,5 +1,5 @@
 {
-  "name": "@benwis/femark-napi-win32-x64-msvc",
+  "name": "@benwis/femark-win32-x64-msvc",
   "version": "0.0.0",
   "os": [
     "win32"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "femark-napi.win32-x64-msvc.node",
+  "main": "femark.win32-x64-msvc.node",
   "files": [
-    "femark-napi.win32-x64-msvc.node"
+    "femark.win32-x64-msvc.node"
   ],
   "license": "MIT",
   "engines": {
