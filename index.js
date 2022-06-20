@@ -236,6 +236,7 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { renderMarkdown } = nativeBinding
+const { processMarkdownToHtml, renderMarkdown } = nativeBinding
 
+module.exports.processMarkdownToHtml = processMarkdownToHtml
 module.exports.renderMarkdown = renderMarkdown

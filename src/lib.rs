@@ -1,7 +1,9 @@
 #![deny(clippy::all)]
+mod amos;
 mod code_format;
 mod escape;
 mod syntect;
+mod tree_sitter_collection;
 mod utils;
 
 #[macro_use]
