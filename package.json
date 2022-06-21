@@ -6,9 +6,6 @@
   "napi": {
     "name": "femark",
     "triples": {
-      "additional": [
-        "aarch64-apple-darwin"
-      ]
     }
   },
   "license": "MIT",
