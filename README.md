@@ -1,6 +1,6 @@
 # femark
 
-A markdown to html parser and syntax highlighter built using Rust's pulldown-cmark and tree-sitter-highlight crate natively for Node's Foreign Function Interface. PRs are welcome. Very much a WIP
+A blazingly fast( possibly the fastest) markdown to html parser and syntax highlighter built using Rust's pulldown-cmark and tree-sitter-highlight crate natively for Node's Foreign Function Interface. PRs are welcome. Very much a WIP
 
 ## Install
 
@@ -9,8 +9,12 @@ npm i @benwis/femark
 ```
 
 ## Use
+The package exposes one function that will process your markdown and compile it to HTML. It will also generate a table of contents for you with your heading tags and their respective level. If you have no headings, toc should be undefined, but if there is an error parsing your markdown, it will throw an error.
+
+It is recomended to run this on the server side, since it has a fairly large package size. If you are using Remix, I recommend you use this in your loaders or actions.
+
 ```ts
-processMarkdownToHtml('# Hello, World!');
+ let {content, toc} = processMarkdownToHtml('# Hello, World!');
 ```
 
 ## Supported Languages
@@ -28,7 +32,7 @@ processMarkdownToHtml('# Hello, World!');
 - TOML
 - JSON
 
-Currently the supported languages are driven mostly by my needs, but I am open to PRs to add additional language support if they are popular. I am currently investigating a way to add language support at runtime, but currently there is no way to do so.
+Currently the supported languages are driven mostly by my needs, but I am open to PRs to add additional language support if they are popular. 
 
 ## Theme
 

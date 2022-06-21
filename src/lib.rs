@@ -115,7 +115,7 @@ impl Langs {
       c.configure(&highlight_names);
       let c = Lang {
         conf: Some(c),
-        name: "jsx code",
+        name: "Javascript React code",
       };
       let c = Arc::new(c);
       res.langs.insert("jsx", c);
@@ -215,7 +215,7 @@ impl Langs {
         name: "Python",
       };
       let c = Arc::new(c);
-      res.langs.insert("python", c);
+      res.langs.insert("Python code", c);
     }
     //   {
     //     let mut c = TreeSitterCollection::yaml().conf;
@@ -268,9 +268,35 @@ pub struct TocEntry {
   slug: String,
 }
 
+/// Takes a vector of TocEntrues and returns it as HTML
+fn generate_toc(toc: &Toc) -> Option<String> {
+  let mut toc_html = String::new();
+
+  if toc.len() > 0 {
+    toc_html.push_str("<ul class=\"table-of-contents\">");
+    for entry in toc {
+      toc_html.push_str(&format!(
+        "<li class=\"toc-entry level-{}\"><a href=\"#{}\">{}</a></li>",
+        entry.level, entry.slug, entry.text
+      ));
+    }
+    toc_html.push_str("</ul>");
+    return Some(toc_html);
+  }
+  None
+}
+
+#[napi(object)]
+pub struct HTMLOutput {
+  pub toc: Option<String>,
+  pub content: String,
+}
 /// Processes markdown to html and syntax highlights the code blocks
+/// Takes in a string and returns an object containing the content HTML and the toc html
+/// Input: string
+/// Output: {toc: string, content: string}
 #[napi]
-pub fn process_markdown_to_html(input: String) -> String {
+pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput, napi::bindgen_prelude::Error> {
   let parser = Parser::new_ext(&input, options());
   let stream = parser;
   let langs = &LANGS;
@@ -429,11 +455,15 @@ pub fn process_markdown_to_html(input: String) -> String {
 
   html::write_html(Cursor::new(&mut output), stream).unwrap();
 
+  let toc_html = generate_toc(&toc);
+
   match String::from_utf8(output) {
-    Ok(html) => html,
-    Err(_) => "".to_string(),
+    Ok(s) => Ok(HTMLOutput {
+      toc: toc_html,
+      content: s,
+    }),
+    Err(e) => Err(HighlightError::StringGenerationError(e.to_string()).into()),
   }
-  //   Ok(output)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -444,11 +474,19 @@ enum HighlightError {
   NoHighlighter,
   #[error("could not build highlighter: {0}")]
   CouldNotBuildHighlighter(String),
+  #[error("Could not generate utf8 String: {0}")]
+  StringGenerationError(String),
 }
 
 impl HighlightError {
   fn benign(&self) -> bool {
     matches!(self, Self::NoLang | Self::NoHighlighter)
+  }
+}
+
+impl From<HighlightError> for napi::Error {
+  fn from(error: HighlightError) -> Self {
+    Self::new(napi::Status::GenericFailure, error.to_string())
   }
 }
 
