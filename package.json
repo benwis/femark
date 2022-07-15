@@ -22,5 +22,10 @@
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "version": "napi version"
+  },
+  "optionalDependencies": {
+    "@benwis/femark-win32-x64-msvc": "0.1.2",
+    "@benwis/femark-darwin-x64": "0.1.2",
+    "@benwis/femark-linux-x64-gnu": "0.1.2"
   }
 }
