@@ -1,8 +1,4 @@
 mod tree_sitter_collection;
-
-#[macro_use]
-extern crate napi_derive;
-
 use crate::tree_sitter_collection::TreeSitterCollection;
 use eyre::Result;
 use once_cell::sync::Lazy;
@@ -97,6 +93,17 @@ impl Langs {
       };
       let c = Arc::new(c);
       res.langs.insert("rust", c);
+    }
+    {
+
+      let mut c = TreeSitterCollection::nix().conf;
+      c.configure(&highlight_names);
+      let c = Lang {
+        conf: Some(c),
+        name: "Nix code",
+      };
+      let c = Arc::new(c);
+      res.langs.insert("nix", c);
     }
     {
       let mut c = TreeSitterCollection::javascript().conf;
@@ -286,7 +293,7 @@ fn generate_toc(toc: &Toc) -> Option<String> {
   None
 }
 
-#[napi(object)]
+#[derive(Debug)]
 pub struct HTMLOutput {
   pub toc: Option<String>,
   pub content: String,
@@ -295,8 +302,7 @@ pub struct HTMLOutput {
 /// Takes in a string and returns an object containing the content HTML and the toc html
 /// Input: string
 /// Output: {toc: string, content: string}
-#[napi]
-pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput, napi::bindgen_prelude::Error> {
+pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput> {
   let parser = Parser::new_ext(&input, options());
   let stream = parser;
   let langs = &LANGS;
@@ -484,12 +490,6 @@ impl HighlightError {
   }
 }
 
-impl From<HighlightError> for napi::Error {
-  fn from(error: HighlightError) -> Self {
-    Self::new(napi::Status::GenericFailure, error.to_string())
-  }
-}
-
 fn highlight_code(
   w: &mut dyn std::fmt::Write,
   source: &str,
@@ -553,6 +553,7 @@ fn write_code_escaped(w: &mut dyn std::fmt::Write, input: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use crate::HTMLOutput;
 
   #[test]
   fn test_write_code_escaped() {
@@ -567,4 +568,28 @@ mod tests {
       "ParseResult&lt;&amp;str&gt; Or Result&lt;Vec&lt;_&gt;&gt; &amp;&amp; false"
     );
   }
+#[test]
+  fn test_basic_highlighting(){
+
+    let input = r#"```html
+        <main class="potato">Hello World</main>
+        ```"#;
+    let HTMLOutput{content, ..} = process_markdown_to_html(input.to_string()).unwrap();
+    println!("{:?}", content);
+    assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">HTML</div><pre class=\"code-block-inner\" data-lang=\"html\">        <i class=hh8>&lt;</i><i class=hh12>main</i> <i class=hh0>class</i>=\"<i class=hh10>potato</i>\"<i class=hh8>&gt;</i>Hello World<i class=hh8>&lt;/</i><i class=hh12>main</i><i class=hh8>&gt;</i>\n        ```</pre></div>");
+  } 
+
+#[test]
+  fn test_nix_highlighting(){
+
+    let input = r#"```nix
+        rec {
+            number_key = 5;
+            list_key = [ number_key true "Hello" ];
+        }
+        ```"#;
+    let HTMLOutput{content, ..} = process_markdown_to_html(input.to_string()).unwrap();
+    println!("{:?}", content);
+    assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">Nix code</div><pre class=\"code-block-inner\" data-lang=\"nix\">        <i class=hh4>rec</i> <i class=hh8>{</i>\n            <i class=hh6><i class=hh6>number_key</i></i> <i class=hh9>=</i> 5<i class=hh9>;</i>\n            <i class=hh6><i class=hh6>list_key</i></i> <i class=hh9>=</i> <i class=hh8>[</i> <i class=hh15>number_key</i> <i class=hh16>true</i> <i class=hh10>\"Hello\"</i> <i class=hh8>]</i><i class=hh9>;</i>\n        <i class=hh8>}</i>\n        ```</pre></div>");
+  } 
 }

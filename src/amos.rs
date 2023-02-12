@@ -254,7 +254,6 @@ pub struct TocEntry {
   slug: String,
 }
 
-#[napi]
 pub fn process_markdown_to_html(input: String) -> String {
   let parser = Parser::new_ext(&input, options());
   let stream = parser;

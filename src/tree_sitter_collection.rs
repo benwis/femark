@@ -144,4 +144,19 @@ impl TreeSitterCollection {
 
     TreeSitterCollection { conf }
   }
+
+ // pub fn nix() -> TreeSitterCollection {
+ //   let lang = unsafe { tree_sitter_nix() };
+ //   let conf = HighlightConfiguration::new(lang, "", "", "").unwrap();
+ //   TreeSitterCollection { conf }
+ // }
+ pub fn nix() -> TreeSitterCollection{
+ let conf = HighlightConfiguration::new(
+     tree_sitter_nix::language(),
+     tree_sitter_nix::HIGHLIGHTS_QUERY,
+     "",
+     "",
+     ).unwrap();
+ TreeSitterCollection { conf  }
+ }
 }

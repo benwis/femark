@@ -187,3 +187,4 @@ $RECYCLE.BIN/
 Cargo.lock
 
 *.node
+/src/amos.rs
