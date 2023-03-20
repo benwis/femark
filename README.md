@@ -1,11 +1,11 @@
 # femark
 
-A blazingly fast( possibly the fastest) markdown to html parser and syntax highlighter built using Rust's pulldown-cmark and tree-sitter-highlight crate natively for Node's Foreign Function Interface. PRs are welcome. Very much a WIP
+A blazingly fast  markdown to html parser and syntax highlighter built using the pulldown-cmark and tree-sitter-highlight crate natively. PRs are welcome. Very much a WIP
 
 ## Install
 
 ```sh
-npm i @benwis/femark
+cargo add femark
 ```
 
 ## Use
@@ -13,8 +13,8 @@ The package exposes one function that will process your markdown and compile it 
 
 It is recomended to run this on the server side, since it has a fairly large package size. If you are using Remix, I recommend you use this in your loaders or actions.
 
-```ts
- let {content, toc} = processMarkdownToHtml('# Hello, World!');
+```rust
+ let (content, toc) = process_markdown_to_html('# Hello, World!');
 ```
 
 ## Supported Languages
@@ -26,6 +26,7 @@ It is recomended to run this on the server side, since it has a fairly large pac
 - Jsx
 - Dockerfile
 - Python
+- Nix
 - Go
 - C
 - HTML
