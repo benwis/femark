@@ -3,9 +3,6 @@ edition = "2021"
 name = "femark"
 version = "0.1.3"
 
-[lib]
-crate-type = ["cdylib"]
-
 [dependencies]
 eyre = "0.6.8"
 once_cell = "1.12.0"
