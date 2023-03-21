@@ -1,7 +1,14 @@
 [package]
 edition = "2021"
 name = "femark"
+authors = ["Ben Wishovich <ben@benw.is>"]
+description = "A Markdown to HTML converter and code syntax highlighter using pulldown-cmark and treesitter."
+repository = "https://github.com/benwis/femark"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
 version = "0.1.3"
+keywords = ["markdown", "html", "syntax", "code", "highlighting"]
+categories = ["web-programming::http-server"]
 
 [dependencies]
 eyre = "0.6.8"
