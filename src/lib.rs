@@ -126,27 +126,27 @@ impl Langs {
             let c = Arc::new(c);
             res.langs.insert("jsx", c);
         }
-        {
-            let mut c = TreeSitterCollection::typescript().conf;
-            c.configure(&highlight_names);
-            let c = Lang {
-                conf: Some(c),
-                name: "TypeScript code",
-            };
-            let c = Arc::new(c);
-            res.langs.insert("typescript", Arc::clone(&c));
-            res.langs.insert("ts", c);
-        }
-        {
-            let mut c = TreeSitterCollection::tsx().conf;
-            c.configure(&highlight_names);
-            let c = Lang {
-                conf: Some(c),
-                name: "TypeScript React code",
-            };
-            let c = Arc::new(c);
-            res.langs.insert("tsx", c);
-        }
+        // {
+        //     let mut c = TreeSitterCollection::typescript().conf;
+        //     c.configure(&highlight_names);
+        //     let c = Lang {
+        //         conf: Some(c),
+        //         name: "TypeScript code",
+        //     };
+        //     let c = Arc::new(c);
+        //     res.langs.insert("typescript", Arc::clone(&c));
+        //     res.langs.insert("ts", c);
+        // }
+        // {
+        //     let mut c = TreeSitterCollection::tsx().conf;
+        //     c.configure(&highlight_names);
+        //     let c = Lang {
+        //         conf: Some(c),
+        //         name: "TypeScript React code",
+        //     };
+        //     let c = Arc::new(c);
+        //     res.langs.insert("tsx", c);
+        // }
         {
             let mut c = TreeSitterCollection::toml().conf;
             c.configure(&highlight_names);
@@ -301,7 +301,7 @@ pub struct HTMLOutput {
 /// Takes in a string and returns an object containing the content HTML and the toc html
 /// Input: string
 /// Output: {toc: string, content: string}
-pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput> {
+pub fn process_markdown_to_html(input: &str) -> Result<HTMLOutput> {
     let parser = Parser::new_ext(&input, options());
     let stream = parser;
     let langs = &LANGS;
@@ -572,7 +572,7 @@ mod tests {
         let input = r#"```html
         <main class="potato">Hello World</main>
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
         println!("{:?}", content);
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">HTML</div><pre class=\"code-block-inner\" data-lang=\"html\">        <i class=hh8>&lt;</i><i class=hh12>main</i> <i class=hh0>class</i>=\"<i class=hh10>potato</i>\"<i class=hh8>&gt;</i>Hello World<i class=hh8>&lt;/</i><i class=hh12>main</i><i class=hh8>&gt;</i>\n        ```</pre></div>");
     }
@@ -585,8 +585,24 @@ mod tests {
             list_key = [ number_key true "Hello" ];
         }
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
         println!("{:?}", content);
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">Nix code</div><pre class=\"code-block-inner\" data-lang=\"nix\">        <i class=hh4>rec</i> <i class=hh8>{</i>\n            <i class=hh6><i class=hh6>number_key</i></i> <i class=hh9>=</i> 5<i class=hh9>;</i>\n            <i class=hh6><i class=hh6>list_key</i></i> <i class=hh9>=</i> <i class=hh8>[</i> <i class=hh15>number_key</i> <i class=hh16>true</i> <i class=hh10>\"Hello\"</i> <i class=hh8>]</i><i class=hh9>;</i>\n        <i class=hh8>}</i>\n        ```</pre></div>");
     }
 }
+#[test]
+fn test_typescript_highlighting() {
+    let input = r#"```typescript
+      const user = {
+  firstName: "Angela",
+  lastName: "Davis",
+  role: "Professor",
+}
+
+console.log(user.name)
+        ```"#;
+    let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
+    println!("{:?}", content);
+    assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">TypeScript code</div><pre class=\"code-block-inner\" data-lang=\"typescript\">      <i class=hh4>const</i> <i class=hh15>user</i> <i class=hh5>=</i> <i class=hh8>{</i>\n  <i class=hh6>firstName</i>: <i class=hh10>\"Angela\"</i><i class=hh9>,</i>\n  <i class=hh6>lastName</i>: <i class=hh10>\"Davis\"</i><i class=hh9>,</i>\n  <i class=hh6>role</i>: <i class=hh10>\"Professor\"</i><i class=hh9>,</i>\n<i class=hh8>}</i>\n\n<i class=hh16>console</i><i class=hh9>.</i><i class=hh3>log</i><i class=hh8>(</i><i class=hh15>user</i><i class=hh9>.</i><i class=hh6>name</i><i class=hh8>)</i>\n        <i class=hh10>``</i>`</pre></div>");
+}
+

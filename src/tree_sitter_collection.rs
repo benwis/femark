@@ -15,42 +15,42 @@ impl TreeSitterCollection {
 
     TreeSitterCollection { conf: rust_conf }
   }
-  pub fn typescript() -> TreeSitterCollection {
-    let mut highlights = tree_sitter_typescript::HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
+  // pub fn typescript() -> TreeSitterCollection {
+  //   let mut highlights = tree_sitter_typescript::HIGHLIGHT_QUERY.to_owned();
+  //   highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
+  //
+  //   let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
+  //   //locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
+  //
+  //   let conf = HighlightConfiguration::new(
+  //     tree_sitter_typescript::language_typescript(),
+  //     &highlights,
+  //     "",
+  //     "",
+  //   )
+  //   .unwrap();
+  //
+  //   TreeSitterCollection { conf }
+  // }
 
-    let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
-    locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
+  // pub fn tsx() -> TreeSitterCollection {
+  //   let mut highlights = tree_sitter_javascript::JSX_HIGHLIGHT_QUERY.to_owned();
+  //   highlights.push_str(tree_sitter_typescript::HIGHLIGHT_QUERY);
+  //   highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
+  //
+  //   let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
+  //   locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
+  //
+  //   let conf = HighlightConfiguration::new(
+  //     tree_sitter_typescript::language_tsx(),
+  //     &highlights,
+  //     tree_sitter_javascript::INJECTION_QUERY,
+  //     &locals,
+  //   )
+  //   .unwrap();
 
-    let conf = HighlightConfiguration::new(
-      tree_sitter_typescript::language_typescript(),
-      &highlights,
-      tree_sitter_javascript::INJECTION_QUERY,
-      &locals,
-    )
-    .unwrap();
-
-    TreeSitterCollection { conf }
-  }
-
-  pub fn tsx() -> TreeSitterCollection {
-    let mut highlights = tree_sitter_javascript::JSX_HIGHLIGHT_QUERY.to_owned();
-    highlights.push_str(tree_sitter_typescript::HIGHLIGHT_QUERY);
-    highlights.push_str(tree_sitter_javascript::HIGHLIGHT_QUERY);
-
-    let mut locals = tree_sitter_typescript::LOCALS_QUERY.to_owned();
-    locals.push_str(tree_sitter_javascript::LOCALS_QUERY);
-
-    let conf = HighlightConfiguration::new(
-      tree_sitter_typescript::language_tsx(),
-      &highlights,
-      tree_sitter_javascript::INJECTION_QUERY,
-      &locals,
-    )
-    .unwrap();
-
-    TreeSitterCollection { conf }
-  }
+  //   TreeSitterCollection { conf }
+  // }
   pub fn javascript() -> TreeSitterCollection {
     let conf = HighlightConfiguration::new(
       tree_sitter_javascript::language(),
