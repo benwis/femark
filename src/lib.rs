@@ -16,14 +16,14 @@ pub struct HTMLOutput {
     pub content: String,
     pub frontmatter: Option<OwnedFrontmatter>,
 }
-/// Processes Markdown to HTML, ignoring codeblocks
+/// Processes markdown to HTML, and highlights the code blocks. If you have frontmatter
+/// in your markdown files, it will be rendered as well.
 pub fn process_markdown_to_html(input: &str) -> Result<HTMLOutput> {
     process_markdown_to_html_with_frontmatter(input, false)
 }
-/// Processes markdown to html and syntax highlights the code blocks
-/// Takes in a string and returns an object containing the content HTML and the toc html
-/// Input: string
-/// Output: {toc: string, content: string}
+/// Processes markdown to html and syntax highlights the code blocks.
+/// Scans for frontmatter, and parses it. A H1 in the frontmatter will be returned.
+/// while the frontmatter code block will not.
 pub fn process_markdown_to_html_with_frontmatter(input: &str, extract_frontmatter: bool) -> Result<HTMLOutput> {
     let parser = Parser::new_ext(&input, options());
     let parser2 = Parser::new_ext(&input, options());
