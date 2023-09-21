@@ -52,9 +52,10 @@ struct Heading {
     plain_text: String,
 }
 
+/// An owned version of the CodeBlock used for the frontmatter. Makes it much easier to return.
 pub struct OwnedCodeBlock{
-    pub(crate) language: Option<String>,
-    pub(crate) source: String,
+    pub language: Option<String>,
+    pub source: String,
 }
 
 impl From<CodeBlock<'_>> for OwnedCodeBlock{
@@ -65,9 +66,10 @@ impl From<CodeBlock<'_>> for OwnedCodeBlock{
         }
     }
 }
+/// An owned verison of the Frontmatter, returned from our functions
 pub struct OwnedFrontmatter{
-    pub(crate) title: Option<String>,
-    pub(crate) code_block: Option<OwnedCodeBlock>,
+    pub title: Option<String>,
+    pub code_block: Option<OwnedCodeBlock>,
 }
 
 impl From<Frontmatter<'_>> for OwnedFrontmatter{
@@ -216,7 +218,7 @@ pub fn process_stream<'a,T>(parser: T, langs: &Lazy<Langs, fn() -> Langs>, toc: 
     html::write_html(Cursor::new(output), stream).unwrap();
 }
 
-pub fn process_stream_with_frontmatter<'a,T>(mut parser: &mut FrontmatterExtractor<'a, T>, langs: &Lazy<Langs, fn() -> Langs>, toc: &mut Toc, output: &mut Vec<u8>, frontmatter_out: &mut Option<OwnedFrontmatter>)
+pub fn process_stream_with_frontmatter<'a,T>(parser: &mut FrontmatterExtractor<'a, T>, langs: &Lazy<Langs, fn() -> Langs>, toc: &mut Toc, output: &mut Vec<u8>, frontmatter_out: &mut Option<OwnedFrontmatter>)
     where T: Iterator<Item = Event<'a>>
 {
     let mut current_code: Option<Code> = None;
