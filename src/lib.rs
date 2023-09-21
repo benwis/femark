@@ -17,14 +17,14 @@ pub struct HTMLOutput {
     pub frontmatter: Option<OwnedFrontmatter>,
 }
 /// Processes Markdown to HTML, ignoring codeblocks
-pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput> {
+pub fn process_markdown_to_html(input: &str) -> Result<HTMLOutput> {
     process_markdown_to_html_with_frontmatter(input, false)
 }
 /// Processes markdown to html and syntax highlights the code blocks
 /// Takes in a string and returns an object containing the content HTML and the toc html
 /// Input: string
 /// Output: {toc: string, content: string}
-pub fn process_markdown_to_html_with_frontmatter(input: String, extract_frontmatter: bool) -> Result<HTMLOutput> {
+pub fn process_markdown_to_html_with_frontmatter(input: &str, extract_frontmatter: bool) -> Result<HTMLOutput> {
     let parser = Parser::new_ext(&input, options());
     let parser2 = Parser::new_ext(&input, options());
     let langs = &LANGS;
@@ -153,7 +153,7 @@ mod tests {
         let input = r#"```html
         <main class="potato">Hello World</main>
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">HTML</div><pre class=\"code-block-inner\" data-lang=\"html\">        <i class=hh8>&lt;</i><i class=hh12>main</i> <i class=hh0>class</i>=\"<i class=hh10>potato</i>\"<i class=hh8>&gt;</i>Hello World<i class=hh8>&lt;/</i><i class=hh12>main</i><i class=hh8>&gt;</i>\n        ```</pre></div>");
     }
 
@@ -165,7 +165,7 @@ mod tests {
             list_key = [ number_key true "Hello" ];
         }
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">Nix code</div><pre class=\"code-block-inner\" data-lang=\"nix\">        <i class=hh4>rec</i> <i class=hh8>{</i>\n            <i class=hh6><i class=hh6>number_key</i></i> <i class=hh9>=</i> 5<i class=hh9>;</i>\n            <i class=hh6><i class=hh6>list_key</i></i> <i class=hh9>=</i> <i class=hh8>[</i> <i class=hh15>number_key</i> <i class=hh16>true</i> <i class=hh10>\"Hello\"</i> <i class=hh8>]</i><i class=hh9>;</i>\n        <i class=hh8>}</i>\n        ```</pre></div>");
     }
 
@@ -180,7 +180,7 @@ mod tests {
 
 console.log(user.name)
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HTMLOutput { content, .. } = process_markdown_to_html(input).unwrap();
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">TypeScript code</div><pre class=\"code-block-inner\" data-lang=\"ts\">       <i class=hh4>const</i> <i class=hh15>user</i> <i class=hh5>=</i> <i class=hh8>{</i>\n  <i class=hh6>firstName</i>: <i class=hh10>\"Angela\"</i><i class=hh9>,</i>\n  <i class=hh6>lastName</i>: <i class=hh10>\"Davis\"</i><i class=hh9>,</i>\n  <i class=hh6>role</i>: <i class=hh10>\"Professor\"</i><i class=hh9>,</i>\n<i class=hh8>}</i>\n\n<i class=hh16>console</i><i class=hh9>.</i><i class=hh3>log</i><i class=hh8>(</i><i class=hh15>user</i><i class=hh9>.</i><i class=hh6>name</i><i class=hh8>)</i>\n        <i class=hh10>``</i>`</pre></div>");
     }
     #[test]
@@ -192,7 +192,7 @@ console.log(user.name)
         }
         let input = include_str!("../samples/frontmatter_example.md");
 
-        let HTMLOutput { content, frontmatter, .. } = process_markdown_to_html_with_frontmatter(input.to_string(), true).unwrap();
+        let HTMLOutput { content, frontmatter, .. } = process_markdown_to_html_with_frontmatter(input, true).unwrap();
 
        let Some(frontmatter) = frontmatter else {
         panic!("No frontmatter detected!");
