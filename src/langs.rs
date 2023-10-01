@@ -204,10 +204,10 @@ impl Langs {
             c.configure(&highlight_names);
             let c = Lang {
                 conf: Some(c),
-                name: "Python",
+                name: "Python code",
             };
             let c = Arc::new(c);
-            res.langs.insert("Python code", c);
+            res.langs.insert("python", c);
         }
         //   {
         //     let mut c = TreeSitterCollection::yaml().conf;
@@ -227,7 +227,7 @@ impl Langs {
                 name: "Dockerfile",
             };
             let c = Arc::new(c);
-            res.langs.insert("Dockerfile", c);
+            res.langs.insert("dockerfile", c);
         }
         {
             let mut c = TreeSitterCollection::json().conf;
@@ -237,7 +237,7 @@ impl Langs {
                 name: "JSON",
             };
             let c = Arc::new(c);
-            res.langs.insert("JSON", c);
+            res.langs.insert("json", c);
         }
 
         Ok(res)
