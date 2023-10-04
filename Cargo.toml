@@ -31,7 +31,8 @@ tree-sitter-nix = "0.0.1"
 tree-sitter-python = "0.20.4"
 tree-sitter-rust = "0.20.4"
 tree-sitter-toml = "0.20.0"
-tree-sitter-typescript = {git="https://github.com/tree-sitter/tree-sitter-typescript.git"}
+#tree-sitter-typescript = {git="https://github.com/tree-sitter/tree-sitter-typescript.git"}
+tree-sitter-typescript = "0.20.3"
 toml = "0.8.0"
 
 [build-dependencies]
