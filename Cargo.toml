@@ -10,6 +10,9 @@ version = "0.1.3"
 keywords = ["markdown", "html", "syntax", "code", "highlighting"]
 categories = ["web-programming::http-server"]
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 eyre = "0.6.8"
 once_cell = "1.12.0"
