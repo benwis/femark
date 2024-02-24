@@ -12,8 +12,8 @@ world femark {
   variant highlighter-error {
 		nolang,
 		nohighlighter,
-		couldnotbuildhighlighter(string),
-        stringgenerationerror(string)
+		could-not-build-highlighter(string),
+        string-generation-error(string)
   }
   export process-markdown-to-html: func(input: string) -> result<html-output, highlighter-error>; 
 }

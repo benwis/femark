@@ -33,7 +33,7 @@ struct MyFemark;
 impl Guest for MyFemark {
     fn process_markdown_to_html(
         input: String,
-    ) -> std::result::Result<HTMLOutput, HighlighterError> {
+    ) -> std::result::Result<HtmlOutput, HighlighterError> {
         process_markdown_to_html(input)
     }
 }
@@ -319,18 +319,13 @@ fn generate_toc(toc: &Toc) -> Option<String> {
     None
 }
 
-#[derive(Debug, Default, Clone)]
-pub struct HTMLOutput {
-    pub toc: Option<String>,
-    pub content: String,
-}
 /// Processes markdown to html and syntax highlights the code blocks
 /// Takes in a string and returns an object containing the content HTML and the toc html
 /// Input: string
 /// Output: {toc: string, content: string}
 pub fn process_markdown_to_html(
     input: String,
-) -> std::result::Result<HTMLOutput, HighlighterError> {
+) -> std::result::Result<HtmlOutput, HighlighterError> {
     let parser = Parser::new_ext(&input, options());
     let stream = parser;
     let langs = &LANGS;
@@ -492,29 +487,17 @@ pub fn process_markdown_to_html(
     let toc_html = generate_toc(&toc);
 
     match String::from_utf8(output) {
-        Ok(s) => Ok(HTMLOutput {
+        Ok(s) => Ok(HtmlOutput {
             toc: toc_html,
             content: s,
         }),
-        Err(e) => Err(HighlighterError::StringGenerationError(e.to_string()).into()),
+        Err(e) => Err(HighlighterError::StringGenerationError(e.to_string())),
     }
-}
-
-#[derive(Debug, thiserror::Error)]
-enum HighlighterError {
-    #[error("language not recognized")]
-    NoLang,
-    #[error("no highlighter for language")]
-    NoHighlighter,
-    #[error("could not build highlighter: {0}")]
-    CouldNotBuildHighlighter(String),
-    #[error("Could not generate utf8 String: {0}")]
-    StringGenerationError(String),
 }
 
 impl HighlighterError {
     fn benign(&self) -> bool {
-        matches!(self, Self::NoLang | Self::NoHighlighter)
+        matches!(self, Self::Nolang | Self::Nohighlighter)
     }
 }
 
@@ -523,8 +506,8 @@ fn highlight_code(
     source: &str,
     lang: &Option<&Lang>,
 ) -> std::result::Result<(), HighlighterError> {
-    let lang = lang.ok_or(HighlighterError::NoLang)?;
-    let conf = lang.conf.as_ref().ok_or(HighlighterError::NoHighlighter)?;
+    let lang = lang.ok_or(HighlighterError::Nolang)?;
+    let conf = lang.conf.as_ref().ok_or(HighlighterError::Nohighlighter)?;
 
     let mut highlighter = Highlighter::new();
     let highlights = highlighter
@@ -581,7 +564,7 @@ fn write_code_escaped(w: &mut dyn std::fmt::Write, input: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::HTMLOutput;
+    use crate::HtmlOutput;
 
     #[test]
     fn test_write_code_escaped() {
@@ -601,7 +584,7 @@ mod tests {
         let input = r#"```html
         <main class="potato">Hello World</main>
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HtmlOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
         println!("{:?}", content);
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">HTML</div><pre class=\"code-block-inner\" data-lang=\"html\">        <i class=hh8>&lt;</i><i class=hh12>main</i> <i class=hh0>class</i>=\"<i class=hh10>potato</i>\"<i class=hh8>&gt;</i>Hello World<i class=hh8>&lt;/</i><i class=hh12>main</i><i class=hh8>&gt;</i>\n        ```</pre></div>");
     }
@@ -614,7 +597,7 @@ mod tests {
             list_key = [ number_key true "Hello" ];
         }
         ```"#;
-        let HTMLOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
+        let HtmlOutput { content, .. } = process_markdown_to_html(input.to_string()).unwrap();
         println!("{:?}", content);
         assert_eq!(content,"<div class=\"code-block\"><div class=\"language-tag\">Nix code</div><pre class=\"code-block-inner\" data-lang=\"nix\">        <i class=hh4>rec</i> <i class=hh8>{</i>\n            <i class=hh6><i class=hh6>number_key</i></i> <i class=hh9>=</i> 5<i class=hh9>;</i>\n            <i class=hh6><i class=hh6>list_key</i></i> <i class=hh9>=</i> <i class=hh8>[</i> <i class=hh15>number_key</i> <i class=hh16>true</i> <i class=hh10>\"Hello\"</i> <i class=hh8>]</i><i class=hh9>;</i>\n        <i class=hh8>}</i>\n        ```</pre></div>");
     }
