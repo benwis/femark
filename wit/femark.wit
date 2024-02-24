@@ -1,5 +1,5 @@
 // wit/femark.wit
-package example:host;
+package benwis:femark;
 
 world femark {
     
@@ -15,5 +15,6 @@ world femark {
 		could-not-build-highlighter(string),
         string-generation-error(string)
   }
+
   export process-markdown-to-html: func(input: string) -> result<html-output, highlighter-error>; 
 }

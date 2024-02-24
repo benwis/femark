@@ -1,3 +1,5 @@
+mod bindings;
+use crate::bindings::{Guest, HighlighterError, HtmlOutput};
 mod tree_sitter_collection;
 use crate::tree_sitter_collection::TreeSitterCollection;
 use eyre::Result;
@@ -12,25 +14,25 @@ use tree_sitter_highlight::{Highlight, HighlightConfiguration, HighlightEvent, H
 
 // Use a procedural macro to generate bindings for the world we specified in
 // `host.wit`
-wit_bindgen::generate!({
-    // the name of the world in the `*.wit` input file
-    world: "femark",
-
-    // For all exported worlds, interfaces, and resources, this specifies what
-    // type they're corresponding to in this module. In this case the `MyHost`
-    // struct defined below is going to define the exports of the `world`,
-    // namely the `run` function.
-    exports: {
-        world: MyFemark,
-    },
-});
+//wit_bindgen::generate!({
+//    // the name of the world in the `*.wit` input file
+//    world: "femark",
+//
+//    // For all exported worlds, interfaces, and resources, this specifies what
+//    // type they're corresponding to in this module. In this case the `MyHost`
+//    // struct defined below is going to define the exports of the `world`,
+//    // namely the `run` function.
+//    exports: {
+//        world: MyFemark,
+//    },
+//});
 
 // Define a custom type and implement the generated `Guest` trait for it which
 // represents implementing all the necessary exported interfaces for this
 // component.
-struct MyFemark;
+struct Component;
 
-impl Guest for MyFemark {
+impl Guest for Component {
     fn process_markdown_to_html(
         input: String,
     ) -> std::result::Result<HtmlOutput, HighlighterError> {

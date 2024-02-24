@@ -1,3 +1,4 @@
+workspace = { members = ["blah"] }
 [package]
 edition = "2021"
 name = "femark"
@@ -11,7 +12,7 @@ keywords = ["markdown", "html", "syntax", "code", "highlighting"]
 categories = ["web-programming::http-server"]
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 eyre = "0.6.8"
@@ -40,3 +41,7 @@ wit-bindgen = "0.19.1"
 lto = "thin"
 
 
+[package.metadata.component]
+package = "benwis:femark"
+
+[package.metadata.component.dependencies]
