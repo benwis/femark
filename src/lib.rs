@@ -10,6 +10,33 @@ use tracing::{debug, warn};
 use tree_sitter::QueryError;
 use tree_sitter_highlight::{Highlight, HighlightConfiguration, HighlightEvent, Highlighter};
 
+// Use a procedural macro to generate bindings for the world we specified in
+// `host.wit`
+wit_bindgen::generate!({
+    // the name of the world in the `*.wit` input file
+    world: "femark",
+
+    // For all exported worlds, interfaces, and resources, this specifies what
+    // type they're corresponding to in this module. In this case the `MyHost`
+    // struct defined below is going to define the exports of the `world`,
+    // namely the `run` function.
+    exports: {
+        world: MyFemark,
+    },
+});
+
+// Define a custom type and implement the generated `Guest` trait for it which
+// represents implementing all the necessary exported interfaces for this
+// component.
+struct MyFemark;
+
+impl Guest for MyFemark {
+    fn process_markdown_to_html(
+        input: String,
+    ) -> std::result::Result<HTMLOutput, HighlighterError> {
+        process_markdown_to_html(input)
+    }
+}
 fn options() -> Options {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_TABLES);
@@ -301,7 +328,9 @@ pub struct HTMLOutput {
 /// Takes in a string and returns an object containing the content HTML and the toc html
 /// Input: string
 /// Output: {toc: string, content: string}
-pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput> {
+pub fn process_markdown_to_html(
+    input: String,
+) -> std::result::Result<HTMLOutput, HighlighterError> {
     let parser = Parser::new_ext(&input, options());
     let stream = parser;
     let langs = &LANGS;
@@ -467,12 +496,12 @@ pub fn process_markdown_to_html(input: String) -> Result<HTMLOutput> {
             toc: toc_html,
             content: s,
         }),
-        Err(e) => Err(HighlightError::StringGenerationError(e.to_string()).into()),
+        Err(e) => Err(HighlighterError::StringGenerationError(e.to_string()).into()),
     }
 }
 
 #[derive(Debug, thiserror::Error)]
-enum HighlightError {
+enum HighlighterError {
     #[error("language not recognized")]
     NoLang,
     #[error("no highlighter for language")]
@@ -483,7 +512,7 @@ enum HighlightError {
     StringGenerationError(String),
 }
 
-impl HighlightError {
+impl HighlighterError {
     fn benign(&self) -> bool {
         matches!(self, Self::NoLang | Self::NoHighlighter)
     }
@@ -493,14 +522,14 @@ fn highlight_code(
     w: &mut dyn std::fmt::Write,
     source: &str,
     lang: &Option<&Lang>,
-) -> std::result::Result<(), HighlightError> {
-    let lang = lang.ok_or(HighlightError::NoLang)?;
-    let conf = lang.conf.as_ref().ok_or(HighlightError::NoHighlighter)?;
+) -> std::result::Result<(), HighlighterError> {
+    let lang = lang.ok_or(HighlighterError::NoLang)?;
+    let conf = lang.conf.as_ref().ok_or(HighlighterError::NoHighlighter)?;
 
     let mut highlighter = Highlighter::new();
     let highlights = highlighter
         .highlight(conf, source.as_bytes(), None, |_| None)
-        .map_err(|e| HighlightError::CouldNotBuildHighlighter(format!("{:?}", e)))?;
+        .map_err(|e| HighlighterError::CouldNotBuildHighlighter(format!("{:?}", e)))?;
     for highlight in highlights {
         let highlight = highlight.unwrap();
         match highlight {

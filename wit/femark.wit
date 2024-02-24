@@ -1,0 +1,19 @@
+// wit/femark.wit
+package example:host;
+
+world femark {
+    
+  record html-output{
+        toc: option<string>,
+        content: string,
+    }
+
+  /// The set of errors which may be raised by the function
+  variant highlighter-error {
+		nolang,
+		nohighlighter,
+		couldnotbuildhighlighter(string),
+        stringgenerationerror(string)
+  }
+  export process-markdown-to-html: func(input: string) -> result<html-output, highlighter-error>; 
+}

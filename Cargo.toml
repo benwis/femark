@@ -34,6 +34,7 @@ tree-sitter-python = "0.19.1"
 tree-sitter-rust = "0.20.1"
 tree-sitter-toml = "0.20.0"
 tree-sitter-typescript = "0.20.1"
+wit-bindgen = "0.19.1"
 
 [profile.release]
 lto = "thin"
