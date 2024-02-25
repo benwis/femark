@@ -1,4 +1,3 @@
-workspace = { members = ["blah"] }
 [package]
 edition = "2021"
 name = "femark"
@@ -35,7 +34,7 @@ tree-sitter-python = "0.19.1"
 tree-sitter-rust = "0.20.1"
 tree-sitter-toml = "0.20.0"
 tree-sitter-typescript = "0.20.1"
-wit-bindgen = "0.19.1"
+wit-bindgen = {version="0.19.1", features=["realloc"]}
 
 [profile.release]
 lto = "thin"
