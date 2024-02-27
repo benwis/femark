@@ -3,18 +3,28 @@ package benwis:femark;
 
 world femark {
     
+  record owned-code-block {
+  language: option<string>,
+  source: string,
+  }
+  record owned-frontmatter {
+        title: option<string>,
+        code-block: option<owned-code-block>
+  }
   record html-output{
         toc: option<string>,
         content: string,
+        frontmatter: option<owned-frontmatter>
     }
 
   /// The set of errors which may be raised by the function
-  variant highlighter-error {
+  variant highlight-error {
 		nolang,
 		nohighlighter,
 		could-not-build-highlighter(string),
         string-generation-error(string)
   }
 
-  export process-markdown-to-html: func(input: string) -> result<html-output, highlighter-error>; 
+  export process-markdown-to-html: func(input: string) -> result<html-output, highlight-error>; 
+  export process-markdown-to-html-with-frontmatter: func(input: string) -> result<html-output, highlight-error>; 
 }

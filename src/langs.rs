@@ -1,9 +1,9 @@
+use crate::tree_sitter_collection::TreeSitterCollection;
+use once_cell::sync::Lazy;
 use std::collections::HashMap;
 use std::sync::Arc;
-use once_cell::sync::Lazy;
 use tree_sitter::QueryError;
 use tree_sitter_highlight::HighlightConfiguration;
-use crate::tree_sitter_collection::TreeSitterCollection;
 
 pub(crate) static LANGS: Lazy<Langs> = Lazy::new(|| Langs::new().unwrap());
 
@@ -41,10 +41,10 @@ impl Langs {
             "macro",
             "label",
         ]
-            .iter()
-            .cloned()
-            .map(String::from)
-            .collect::<Vec<_>>();
+        .iter()
+        .cloned()
+        .map(String::from)
+        .collect::<Vec<_>>();
 
         let mut res = Self {
             langs: Default::default(),

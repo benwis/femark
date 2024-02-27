@@ -1,13 +1,13 @@
-use std::io::Cursor;
+use crate::bindings::{OwnedCodeBlock, OwnedFrontmatter};
+use crate::langs::Langs;
+use crate::{highlight_code, write_code_escaped};
 use once_cell::sync::Lazy;
 use pulldown_cmark::{html, CodeBlockKind, Event, HeadingLevel, Options, Tag};
 use pulldown_cmark_frontmatter::{CodeBlock, Frontmatter, FrontmatterExtractor};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use slug::slugify;
+use std::io::Cursor;
 use tracing::{debug, warn};
-use crate::{highlight_code, write_code_escaped};
-use crate::langs::Langs;
-
 pub type Toc = Vec<TocEntry>;
 
 #[derive(Serialize, Deserialize)]
@@ -24,7 +24,7 @@ pub struct TocEntry {
 pub(crate) fn generate_toc(toc: &Toc) -> Option<String> {
     let mut toc_html = String::new();
 
-    if toc.len() > 0 {
+    if !toc.is_empty() {
         toc_html.push_str("<ul class=\"table-of-contents\">");
         for entry in toc {
             toc_html.push_str(&format!(
@@ -52,36 +52,30 @@ struct Heading {
     plain_text: String,
 }
 
-/// An owned version of the CodeBlock used for the frontmatter. Makes it much easier to return.
-pub struct OwnedCodeBlock{
-    pub language: Option<String>,
-    pub source: String,
-}
-
-impl From<CodeBlock<'_>> for OwnedCodeBlock{
+impl From<CodeBlock<'_>> for OwnedCodeBlock {
     fn from(cb: CodeBlock) -> Self {
-        Self{
-            language: cb.language.map_or(None, |c| Some(c.to_string())),
+        Self {
+            language: cb.language.map(|c| c.to_string()),
             source: cb.source.to_string(),
         }
     }
 }
-/// An owned verison of the Frontmatter, returned from our functions
-pub struct OwnedFrontmatter{
-    pub title: Option<String>,
-    pub code_block: Option<OwnedCodeBlock>,
-}
 
-impl From<Frontmatter<'_>> for OwnedFrontmatter{
+impl From<Frontmatter<'_>> for OwnedFrontmatter {
     fn from(fm: Frontmatter) -> Self {
-        Self{
+        Self {
             title: fm.title.map_or(None, |t| Some(t)),
-            code_block: fm.code_block.map_or(None, |t| Some(t.into())),
+            code_block: fm.code_block.map(|t| t.into()),
         }
     }
 }
-pub fn process_stream<'a,T>(parser: T, langs: &Lazy<Langs, fn() -> Langs>, toc: &mut Toc, output: &mut Vec<u8>)
-    where T: Iterator<Item = Event<'a>>
+pub fn process_stream<'a, T>(
+    parser: T,
+    langs: &Lazy<Langs, fn() -> Langs>,
+    toc: &mut Toc,
+    output: &mut Vec<u8>,
+) where
+    T: Iterator<Item = Event<'a>>,
 {
     let mut current_code: Option<Code> = None;
     let mut current_heading: Option<Heading> = None;
@@ -143,14 +137,14 @@ pub fn process_stream<'a,T>(parser: T, langs: &Lazy<Langs, fn() -> Langs>, toc: 
                             r#"<div class="language-tag">{}</div>"#,
                             lang.map(|l| l.name).unwrap_or(&current.lang)
                         )
-                            .ok();
+                        .ok();
                     }
                     write!(
                         &mut out,
                         r#"<pre class="code-block-inner" data-lang={:?}>"#,
                         current.lang
                     )
-                        .ok();
+                    .ok();
 
                     if let Err(e) = highlight_code(&mut out, &current.source, &lang) {
                         if !e.benign() {
@@ -194,7 +188,7 @@ pub fn process_stream<'a,T>(parser: T, langs: &Lazy<Langs, fn() -> Langs>, toc: 
                         </{tag}>
                         "#
                         )
-                            .into(),
+                        .into(),
                     );
                 }
             }
@@ -218,8 +212,14 @@ pub fn process_stream<'a,T>(parser: T, langs: &Lazy<Langs, fn() -> Langs>, toc: 
     html::write_html(Cursor::new(output), stream).unwrap();
 }
 
-pub fn process_stream_with_frontmatter<'a,T>(parser: &mut FrontmatterExtractor<'a, T>, langs: &Lazy<Langs, fn() -> Langs>, toc: &mut Toc, output: &mut Vec<u8>, frontmatter_out: &mut Option<OwnedFrontmatter>)
-    where T: Iterator<Item = Event<'a>>
+pub fn process_stream_with_frontmatter<'a, T>(
+    parser: &mut FrontmatterExtractor<'a, T>,
+    langs: &Lazy<Langs, fn() -> Langs>,
+    toc: &mut Toc,
+    output: &mut Vec<u8>,
+    frontmatter_out: &mut Option<OwnedFrontmatter>,
+) where
+    T: Iterator<Item = Event<'a>>,
 {
     let mut current_code: Option<Code> = None;
     let mut current_heading: Option<Heading> = None;
@@ -227,7 +227,7 @@ pub fn process_stream_with_frontmatter<'a,T>(parser: &mut FrontmatterExtractor<'
     let mut in_figcaption = false;
 
     parser.extract_buffered();
-    *frontmatter_out = parser.frontmatter.clone().map_or(None, |f| Some(f.into()));
+    *frontmatter_out = parser.frontmatter.clone().map(|f| f.into());
     let stream = parser.map(|ev| {
         debug!(?ev, "Got markdown event");
         match &ev {
@@ -283,14 +283,14 @@ pub fn process_stream_with_frontmatter<'a,T>(parser: &mut FrontmatterExtractor<'
                             r#"<div class="language-tag">{}</div>"#,
                             lang.map(|l| l.name).unwrap_or(&current.lang)
                         )
-                            .ok();
+                        .ok();
                     }
                     write!(
                         &mut out,
                         r#"<pre class="code-block-inner" data-lang={:?}>"#,
                         current.lang
                     )
-                        .ok();
+                    .ok();
 
                     if let Err(e) = highlight_code(&mut out, &current.source, &lang) {
                         if !e.benign() {
@@ -334,7 +334,7 @@ pub fn process_stream_with_frontmatter<'a,T>(parser: &mut FrontmatterExtractor<'
                         </{tag}>
                         "#
                         )
-                            .into(),
+                        .into(),
                     );
                 }
             }
@@ -365,3 +365,4 @@ pub(crate) fn options() -> Options {
     options.insert(Options::ENABLE_TASKLISTS);
     options
 }
+
